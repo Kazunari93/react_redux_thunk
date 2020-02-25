@@ -21,15 +21,27 @@ const QuizList = () => {
     startFetchQuizzes();
   }, [dispatch, startFetchQuizzes]);
 
-  const displayAnswer = () => {
+  const startLoading = () => {
+    return (
+      <div>
+        <h1>Quiz</h1>
+        <p>Now Loading...!</p>
+        <Link to="/">
+          <h2>Home</h2>
+        </Link>
+      </div>
+    );
+  };
+
+  const displayQuiz = () => {
     const quiz = quizzes[currentIndex];
     const answers = quiz.shuffleAnswers().map((answer, index) => {
-      return <div key={index}>{answer}</div>;
+      return <li key={index}>{answer}</li>;
     });
     return (
       <div>
         <h1>Quiz</h1>
-        <h2>{answers.question}</h2>
+        <h3>Quiz : {quiz.question}</h3>
         <ul>{answers}</ul>
         <Link to="/">
           <h2>Home</h2>
@@ -38,25 +50,10 @@ const QuizList = () => {
     );
   };
 
-  // const q = quizzes;
-  // q.map(a => {
-  //   return console.log(a.shuffleAnswers());
-  // });
-  // console.log(q)
-  // console.log(q[9].shuffleAnswers());
-
   return (
     <div>
-      {isLoading && (
-        <div>
-          <h1>Quiz</h1>
-          <p>Now Loading...!</p>
-          <Link to="/">
-            <h2>Home</h2>
-          </Link>
-        </div>
-      )}
-      {!isLoading && <div>{displayAnswer(quizzes)}</div>}
+      {isLoading && startLoading()}
+      {!isLoading && quizzes.length > 0 && displayQuiz(quizzes)}
     </div>
   );
 };

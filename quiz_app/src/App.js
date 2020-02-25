@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>hello</h1>
+        <h1>Quiz App</h1>
         <Route path="/" exact component={Home} />
         <Route path="/quiz" exact component={QuizList} />
       </div>
