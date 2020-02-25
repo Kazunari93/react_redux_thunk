@@ -53,7 +53,7 @@ const QuizList = () => {
   return (
     <div>
       {isLoading && startLoading()}
-      {!isLoading && quizzes.length > 0 && displayQuiz(quizzes)}
+      {!isLoading && quizzes.length > 0 && displayQuiz()}
     </div>
   );
 };
