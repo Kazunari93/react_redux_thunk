@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuizzes } from "../../actions/quizActionCreator";
-import Button from "../Button/Button";
+import Click from "../Click/Click";
+import Grid from "@material-ui/core/Grid";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const QuizList = () => {
   const dispatch = useDispatch();
@@ -26,13 +33,17 @@ const QuizList = () => {
 
   const startLoading = () => {
     return (
-      <div>
-        <h1>Quiz</h1>
-        <p>Now Loading...!</p>
-        <Link to="/">
-          <h2>Home</h2>
-        </Link>
-      </div>
+      <Box>
+        <Box p={4}>
+          <Typography variant="h4">Quiz</Typography>
+        </Box>
+        <LinearProgress variant="query" />
+        <Box p={4}>
+          <Link to="/">
+            <Typography variant="h5">Home</Typography>
+          </Link>
+        </Box>
+      </Box>
     );
   };
 
@@ -40,38 +51,54 @@ const QuizList = () => {
     const quiz = quizzes[currentIndex];
     const answers = quiz.shuffleAnswers().map((answer, index) => {
       return (
-        <li key={index}>
-          <Button clickButton={() => judgeAnswer(quiz, answer)}>
-            {answer}
-          </Button>
-        </li>
+        <ListItem key={index}>
+          <Click clickButton={() => judgeAnswer(quiz, answer)}>
+            <Button>{answer}</Button>
+          </Click>
+        </ListItem>
       );
     });
     return (
-      <div>
-        <h1>Quiz</h1>
-        <h3>Quiz : {quiz.question}</h3>
-        <ul>{answers}</ul>
-        <Link to="/">
-          <h2>Home</h2>
-        </Link>
-      </div>
+      <Box>
+        <Grid container direction="column" alignItems="center">
+          <Box m={3}>
+            <Typography variant="h5">Quiz : {quiz.question}</Typography>
+          </Box>
+          <Grid item>
+            <List>{answers}</List>
+          </Grid>
+          <Box p={2}>
+            <Link to="/">
+              <Typography variant="h5">Home</Typography>
+            </Link>
+          </Box>
+        </Grid>
+      </Box>
     );
   };
 
   const showResults = () => {
     return (
-      <div>
-        <h1>Quiz</h1>
-        <h2>Your score</h2>
-        <p>
-          {numberOfCorrect}/{quizzes.length}
-        </p>
-        <Button clickButton={() => startFetchQuizzes()}>Restart</Button>
-        <Link to="/">
-          <h2>Home</h2>
-        </Link>
-      </div>
+      <Box>
+        <Box>
+          <Typography variant="h5">Your score</Typography>
+          <Box m={3}>
+            <Typography variant="h1">
+              {numberOfCorrect}/{quizzes.length}
+            </Typography>
+          </Box>
+        </Box>
+        <Box p={2}>
+          <Click clickButton={() => startFetchQuizzes()}>
+            <Button variant="contained">Restart</Button>
+          </Click>
+        </Box>
+        <Box p={2}>
+          <Link to="/">
+            <Typography variant="h5">Home</Typography>
+          </Link>
+        </Box>
+      </Box>
     );
   };
   console.log(currentIndex, numberOfCorrect);
@@ -94,4 +121,5 @@ const QuizList = () => {
     </div>
   );
 };
+
 export default QuizList;
