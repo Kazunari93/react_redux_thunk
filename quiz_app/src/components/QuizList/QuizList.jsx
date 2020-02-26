@@ -12,10 +12,12 @@ const QuizList = () => {
   }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [numberOfCorrected, setNumberOfCorrect] = useState(0);
+  const [numberOfCorrect, setNumberOfCorrect] = useState(0);
 
   const startFetchQuizzes = useCallback(() => {
     dispatch(fetchQuizzes());
+    setNumberOfCorrect(0);
+    setCurrentIndex(0);
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ const QuizList = () => {
     const answers = quiz.shuffleAnswers().map((answer, index) => {
       return (
         <li key={index}>
-          <Button clickAnswer={() => judgeAnswer(quiz, answer)}>
+          <Button clickButton={() => judgeAnswer(quiz, answer)}>
             {answer}
           </Button>
         </li>
@@ -57,9 +59,25 @@ const QuizList = () => {
     );
   };
 
+  const showResults = () => {
+    return (
+      <div>
+        <h1>Quiz</h1>
+        <h2>Your score</h2>
+        <p>
+          {numberOfCorrect}/{quizzes.length}
+        </p>
+        <Button clickButton={() => startFetchQuizzes()}>Restart</Button>
+        <Link to="/">
+          <h2>Home</h2>
+        </Link>
+      </div>
+    );
+  };
+  console.log(currentIndex, numberOfCorrect);
   const judgeAnswer = (quiz, answer) => {
     if (quiz.correctAnswer === answer) {
-      setNumberOfCorrect(numberOfCorrected + 1);
+      setNumberOfCorrect(numberOfCorrect + 1);
       alert("Correct answer!");
     } else {
       alert(`Incorrect answer... Correct answer is ${quiz.correctAnswer}`);
@@ -71,7 +89,8 @@ const QuizList = () => {
   return (
     <div>
       {isLoading && startLoading()}
-      {!isLoading && quizzes.length > 0 && displayQuiz()}
+      {!isLoading && quizzes.length > currentIndex && displayQuiz()}
+      {currentIndex === 10 && showResults()}
     </div>
   );
 };

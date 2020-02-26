@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Button = props => {
-  const { clickAnswer } = props;
-  return <div onClick={clickAnswer}>{props.children}</div>;
+  const { clickButton } = props;
+  return <div onClick={clickButton}>{props.children}</div>;
 };
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
-  clickAnswer: PropTypes.func.isRequired
+  clickButton: PropTypes.func.isRequired
 };
 export default Button;
