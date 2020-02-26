@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuizzes } from "../../actions/quizActionCreator";
+import Button from "../Button/Button";
 
 const QuizList = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,13 @@ const QuizList = () => {
   const displayQuiz = () => {
     const quiz = quizzes[currentIndex];
     const answers = quiz.shuffleAnswers().map((answer, index) => {
-      return <li key={index}>{answer}</li>;
+      return (
+        <li key={index}>
+          <Button clickAnswer={() => judgeAnswer(quiz, answer)}>
+            {answer}
+          </Button>
+        </li>
+      );
     });
     return (
       <div>
@@ -48,6 +55,17 @@ const QuizList = () => {
         </Link>
       </div>
     );
+  };
+
+  const judgeAnswer = (quiz, answer) => {
+    if (quiz.correctAnswer === answer) {
+      setNumberOfCorrect(numberOfCorrected + 1);
+      alert("Correct answer!");
+    } else {
+      alert(`Incorrect answer... Correct answer is ${quiz.correctAnswer}`);
+    }
+    setCurrentIndex(currentIndex + 1);
+    displayQuiz();
   };
 
   return (
